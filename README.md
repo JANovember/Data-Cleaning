@@ -20,16 +20,16 @@ def setup_logging():
 general info:
 Logging Methods:
 
-logging.info: Logs informational messages.
-logging.error: Logs error messages.
-logging.exception: Logs error messages with a traceback.
-Log Levels:
+- logging.info: Logs informational messages.
+- logging.error: Logs error messages.
+- logging.exception: Logs error messages with a traceback.
 
-DEBUG: Detailed information for debugging.
-INFO: General information about program execution.
-WARNING: An indication that something unexpected happened but the program can still continue.
-ERROR: A serious issue that prevents part of the program from functioning.
-CRITICAL: A very serious error indicating that the program may not continue.
+Log Levels:
+- DEBUG: Detailed information for debugging.
+- INFO: General information about program execution.
+- WARNING: An indication that something unexpected happened but the program can still continue.
+- ERROR: A serious issue that prevents part of the program from functioning.
+- CRITICAL: A very serious error indicating that the program may not continue.
 
 ### Read a CSV file and apply the result to a dataframe named 'df'
 ```
