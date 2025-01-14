@@ -11,7 +11,7 @@ import logging
 ```
 def setup_logging():
     logging.basicConfig(
-    filename='app.log',  # Name of the log file
+    filename='breadcrumbs.log',  # Name of the log file
     level=logging.INFO,  # Set the minimum logging level
     format='%(asctime)s - %(levelname)s - %(message)s',  # Log message format
     datefmt='%Y-%m-%d %H:%M:%S'  # Date and time format
