@@ -10,8 +10,27 @@ import logging
 ### Set up logging (for a Jupyter notebook, we will print logs directly to output)
 ```
 def setup_logging():
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logging.basicConfig(
+    filename='app.log',  # Name of the log file
+    level=logging.INFO,  # Set the minimum logging level
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Log message format
+    datefmt='%Y-%m-%d %H:%M:%S'  # Date and time format
+)
 ```
+general info:
+Logging Methods:
+
+logging.info: Logs informational messages.
+logging.error: Logs error messages.
+logging.exception: Logs error messages with a traceback.
+Log Levels:
+
+DEBUG: Detailed information for debugging.
+INFO: General information about program execution.
+WARNING: An indication that something unexpected happened but the program can still continue.
+ERROR: A serious issue that prevents part of the program from functioning.
+CRITICAL: A very serious error indicating that the program may not continue.
+
 ### Read a CSV file and apply the result to a dataframe named 'df'
 ```
 def read_csv(file_path, sep=';', header=0, engine=None):
