@@ -24,10 +24,10 @@ def read_csv(file_path, sep=';', header=0, engine=None):
 ```
 
 ### Standardizing column headers
+standardize column headers by lowercasing all characters, removing all spaces and underscrores
 ```
 def standardize_column_headers(df):
     df.columns = df.columns.str.lower().str.replace(' ', '').str.replace('_', '')
-    print(f'Headers standardized to lowercase and removed whitespace/underscores.')
     return df
 ```
 ### Filtering necessary columns
