@@ -17,7 +17,6 @@ def setup_logging():
     datefmt='%Y-%m-%d %H:%M:%S'  # Date and time format
 )
 ```
-general info:
 Logging Methods:
 
 - logging.info: Logs informational messages.
