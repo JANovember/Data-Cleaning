@@ -51,7 +51,7 @@ def standardize_column_headers(df):
     df.columns = df.columns.str.lower().str.replace(' ', '').str.replace('_', '')
     return df
 ```
-### Filtering necessary columns
+### Filtering necessary columns by namelist
 ``` python
 def filter_dataframe(df, columns_to_keep):
     """
