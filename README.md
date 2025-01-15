@@ -8,7 +8,7 @@ import difflib
 import logging
 ```
 ### Set up logging (for a Jupyter notebook, we will print logs directly to output)
-```
+``` python
 def setup_logging():
     logging.basicConfig(
     filename='breadcrumbs.log',  # Name of the log file
@@ -31,7 +31,7 @@ Log Levels:
 - CRITICAL: A very serious error indicating that the program may not continue.
 
 ### Read a CSV file and apply the result to a dataframe named 'df'
-```
+``` python
 def read_csv(file_path, sep=';', header=0, engine=None):
     try:
         df = pd.read_csv(file_path, sep=sep, header=header, engine=engine)
@@ -43,13 +43,13 @@ def read_csv(file_path, sep=';', header=0, engine=None):
 
 ### Standardizing column headers
 standardize column headers by lowercasing all characters, removing all spaces and underscrores
-```
+``` python
 def standardize_column_headers(df):
     df.columns = df.columns.str.lower().str.replace(' ', '').str.replace('_', '')
     return df
 ```
 ### Filtering necessary columns
-```
+``` python
 def filter_dataframe(df, columns_to_keep):
     """
     Filters a DataFrame to retain only specified columns, with error handling and logging.
@@ -85,7 +85,7 @@ def filter_dataframe(df, columns_to_keep):
 ```
 
 ### Validating email addresses
-```
+``` python
 def validate_emails(df, column):
     try:
         email_pattern = r'^[a-zA-Z0-9._%+-]+@([^\d@]+\.[a-zA-Z]{2,})$'
@@ -115,7 +115,7 @@ def validate_emails(df, column):
         return df
 ```
 ### Cleaning and standardizing names
-```
+``` python
 def clean_and_standardize_names(df, column_first_name):
     try:
 
@@ -152,7 +152,7 @@ def clean_and_standardize_names(df, column_first_name):
 ```
 
 ### Validating phone numbers
-```
+``` python
 def validate_phone_numbers(df, column):
     try:
         df[column] = df[column].astype(str).str.replace(r'\D', '', regex=True)
@@ -173,7 +173,7 @@ def validate_phone_numbers(df, column):
 ```
 
 ### Removing duplicates
-```
+``` python
 def remove_duplicates(df):
     try:
         initial_count = len(df)
