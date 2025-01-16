@@ -12,13 +12,39 @@ import logging
 ```
 ### Set up logging (for a Jupyter notebook, we will print logs directly to output)
 ``` python
-def setup_logging():
-    logging.basicConfig(
-    filename='breadcrumbs.log',  # Name of the log file
-    level=logging.INFO,  # Set the minimum logging level
-    format='%(asctime)s - %(levelname)s - %(message)s',  # Log message format
-    datefmt='%Y-%m-%d %H:%M:%S'  # Date and time format
-)
+# Configure logging
+def setup_logger():
+    logger = logging.getLogger("Data Cleaner")  # Create a logger object
+    if not logger.hasHandlers():  # Avoid adding handlers multiple times
+        logger.setLevel(logging.DEBUG)  # Set the minimum logging level
+
+        # Create handlers
+        file_handler = logging.FileHandler("breadcrumbs.log")  # Logs to a file
+        console_handler = logging.StreamHandler()  # Logs to the VSCode terminal
+
+        # Set logging level for handlers
+        file_handler.setLevel(logging.DEBUG)
+        console_handler.setLevel(logging.INFO)
+
+        # Create formatters
+        formatter = logging.Formatter(
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
+        file_handler.setFormatter(formatter)
+        console_handler.setFormatter(formatter)
+
+        # Add handlers to the logger
+        logger.addHandler(file_handler)
+        logger.addHandler(console_handler)
+
+    return logger
+
+# Initialize the logger
+logger = setup_logger()
+
+# Log a message
+logger.info("Logging configured successfully")
 ```
 Logging Methods:
 
