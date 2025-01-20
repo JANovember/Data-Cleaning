@@ -1,5 +1,5 @@
 # 🧹 Data Cleaning Toolbox 📊
-Welcome to the Data Cleaning Toolbox! This repository is a curated collection of useful and reusable functions to streamline the process of cleaning and preparing data for analysis or machine learning.
+Welcome to the Data Cleaning Toolbox! A curated collection of useful and reusable functions to streamline the process of cleaning and preparing data for analysis or machine learning.
 
 ### Usual libraries
 ``` python
