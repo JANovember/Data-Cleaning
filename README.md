@@ -9,7 +9,9 @@ import numpy as np
 import regex as re
 import difflib
 import logging
+from googletrans import Translator
 ```
+
 ### Set up logging (for a Jupyter notebook, we will print logs directly to output)
 ``` python
 # Configure logging
@@ -68,6 +70,38 @@ def read_csv(file_path, sep=';', header=0, engine=None):
     except Exception as e:
         print(f'Error reading csv: {e}')
         return None
+```
+### Translating all column headers to eanglish using googletrans
+``` python
+def translate_headers(file_path, output_path, file_type='csv'):
+    """
+    Translates the column headers of a given CSV or Excel file to English.
+    
+    :param file_path: Path to the input file (CSV or Excel)
+    :param output_path: Path to save the translated file
+    :param file_type: Type of file ('csv' or 'excel')
+    """
+    translator = Translator()
+    
+    # Load the file
+    if file_type == 'csv':
+        df = pd.read_csv(file_path)
+    elif file_type == 'excel':
+        df = pd.read_excel(file_path)
+    else:
+        raise ValueError("Unsupported file type. Use 'csv' or 'excel'.")
+    
+    # Translate headers
+    translated_headers = {col: translator.translate(col, dest='en').text for col in df.columns}
+    df.rename(columns=translated_headers, inplace=True)
+    
+    # Save the translated file
+    if file_type == 'csv':
+        df.to_csv(output_path, index=False)
+    else:
+        df.to_excel(output_path, index=False)
+    
+    print(f"File with translated headers saved to {output_path}")
 ```
 
 ### Standardizing column headers
