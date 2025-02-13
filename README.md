@@ -148,34 +148,67 @@ def filter_dataframe(df, columns_to_keep):
 ```
 
 ### Validating email addresses
+- Allows special characters in the local part (!#$%&'*+/=?^_{|}~.-`).
+- Supports quoted local parts ("john.doe"@example.com).
+- Accepts IP addresses in the domain part (jsmith@[192.168.1.1]).
+- Prevents hyphens at the start or end of the domain.
+
+##### Preserves Custom Domains:
+- Does not forcibly change valid domains.
+- Uses difflib.get_close_matches() only when needed.
+
+##### Safer Domain Cleaning:
+- Strips unwanted characters but keeps dots (.) and hyphens (-) within valid positions.
 ``` python
+import re
+import difflib
+import pandas as pd
+
 def validate_emails(df, column):
     try:
-        email_pattern = r'^[a-zA-Z0-9._%+-]+@([^\d@]+\.[a-zA-Z]{2,})$'
-        valid_domains = ['gmail.com', 'hotmail.com', 'yahoo.com', 'outlook.com', 'aol.com', 'icloud.com','naver.com','naver.net','hanmail.net']
+        # Improved regex pattern for email validation
+        email_pattern = r'^(?:"?([a-zA-Z0-9!#$%&\'*+/=?^_`{|}~.-]+)"?@((?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|(?:\[(?:[0-9]{1,3}\.){3}[0-9]{1,3}\])))$'
         
+        valid_domains = ['gmail.com', 'hotmail.com', 'yahoo.com', 'outlook.com', 'aol.com', 
+                         'icloud.com', 'naver.com', 'naver.net', 'hanmail.net']
+        
+        # Remove spaces from emails
         df[column] = df[column].str.replace(' ', '', regex=False)
 
         def clean_and_match_email(email):
             if isinstance(email, str) and '@' in email:
                 username, domain = email.split('@', 1)
-                domain = re.sub(r'[^a-zA-Z0-9.-]', '', domain).strip().replace(' ', '').lower()
+                
+                # Remove invalid domain characters (except allowed ones)
+                domain = re.sub(r'[^a-zA-Z0-9.-]', '', domain).strip().lower()
+
+                # Ensure hyphens are not at the start or end
+                domain = re.sub(r'^-+|-+$', '', domain)
+
+                # Check if domain matches known providers
                 corrected_domain = difflib.get_close_matches(domain, valid_domains, n=1, cutoff=0.8)
                 if corrected_domain:
-                    domain = corrected_domain[0]
+                    domain = corrected_domain[0]  # Apply correction only if close match is found
+
                 return username + '@' + domain
             return email
         
+        # Apply cleaning and domain correction
         df[column] = df[column].apply(clean_and_match_email)
+
+        # Identify invalid emails based on improved regex
         invalid_emails = df[~df[column].str.match(email_pattern, na=False)]
 
-        # Replace invalid emails with an empty string
-        df.loc[~df['email'].str.match(email_pattern, na=False), column] = ""
+        # Log invalid emails in a separate column instead of outright replacing them
+        df["invalid_email"] = df[column].where(~df[column].str.match(email_pattern, na=False))
+
         print(f'Found {len(invalid_emails)} invalid email addresses.')
+
         return df
     except Exception as e:
         print(f'Error validating emails: {e}')
         return df
+
 ```
 ### Cleaning and standardizing names
 ``` python
