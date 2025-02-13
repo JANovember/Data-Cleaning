@@ -164,7 +164,7 @@ import re
 import difflib
 import pandas as pd
 
-def validate_emails(df, column):
+def validate_emails(df, column, invalid_email_file="invalid_emails.csv"):
     try:
         # Improved regex pattern for email validation
         email_pattern = r'^(?:"?([a-zA-Z0-9!#$%&\'*+/=?^_`{|}~.-]+)"?@((?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|(?:\[(?:[0-9]{1,3}\.){3}[0-9]{1,3}\])))$'
@@ -199,16 +199,19 @@ def validate_emails(df, column):
         # Identify invalid emails based on improved regex
         invalid_emails = df[~df[column].str.match(email_pattern, na=False)]
 
-        # Log invalid emails in a separate column instead of outright replacing them
-        df["invalid_email"] = df[column].where(~df[column].str.match(email_pattern, na=False))
+        if not invalid_emails.empty:
+            # Save invalid emails to a file
+            invalid_emails.to_csv(invalid_email_file, index=False)
+            print(f'Saved {len(invalid_emails)} invalid emails to {invalid_email_file}.')
+
+        # Replace invalid emails with an empty string
+        df.loc[~df[column].str.match(email_pattern, na=False), column] = ""
 
         print(f'Found {len(invalid_emails)} invalid email addresses.')
-
         return df
     except Exception as e:
         print(f'Error validating emails: {e}')
         return df
-
 ```
 ### Cleaning and standardizing names
 ``` python
